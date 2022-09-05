@@ -1,5 +1,7 @@
 import sys
 
+from node import Node
+
 current = {}
 last = {}
 # Défini la position du curseur dans la chaîne de caractères
@@ -7,7 +9,8 @@ position = 0
 # Variable gardant la ligne en mémoire pour savoir à quelle ligne se situe le token
 ligne = 1
 special_characters = {"/": "tok_slash", "(": "tok_parouvr", ")": "tok_ferm", "{": "tok_accouvr", "}": "tok_accferm",
-                      ";": "tok_ptvirg", "=": "tok_affect", "+": "tok_plus", "*": "tok_star"}
+                      ";": "tok_ptvirg", "=": "tok_affect", "+": "tok_plus", "*": "tok_star", "-": "tok_minus",
+                      "!": "tok_exclam"}
 keywords = ["int", "return", "if", "for", "while", "do", "break", "continue", "else"]
 variables = {}
 
@@ -125,6 +128,30 @@ def accept(token_type):
     if not check(token_type):
         raise Exception("Le type ne correspond pas")
 
+
+# Partie analyseur syntaxique
+def SA() -> Node:
+    if current["Type"] != "EOS":
+        raise Exception
+    return None
+
+
+def G() -> Node:
+    return F()
+
+
+def F() -> Node:
+    return P()
+
+
+def P() -> Node:
+    if check("tok_minus"):
+        P()
+    elif check("token_plus"):
+        P()
+    elif check("tok_exclam"):
+
+    return None
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
