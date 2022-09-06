@@ -112,10 +112,21 @@ def extract_tokens(text: str):
             continue
 
         elif read_char in special_characters:  # reste  à traiter le cas des caractere speciaux comportant 2 carcatères
-            # reste à traiter le cas des dièses
-            position = position + 1
-            tab_token.append({"type": special_characters[read_char], "valeur": read_char, "ligne": ligne})
-            continue
+            # On ajoute le caractère actuel dans un buffer qui servira ... ou pas
+            special_characters_buffer = read_char
+
+            # Si la position incrémentée est différente du nombre
+            # total de caractère, alors on va pouvoir regarder le buffer
+            if position + 1 != text_length:
+                pos_temp = position + 1
+                special_characters_buffer += text[pos_temp]
+
+                if special_characters_buffer in special_characters:
+                    tab_token.append({"type": special_characters[special_characters_buffer], "valeur": special_characters_buffer, "ligne": ligne})
+                    position += 2
+                else:
+                    tab_token.append({"type": special_characters[read_char], "valeur": read_char, "ligne": ligne})
+                    position += 1
 
     tab_token.append({"type": "EOS", "valeur": "EOS", "ligne": ligne})
     position = 0
